@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 # Parameters
-original = "cloudy_nights"
+original = "nome_da_foto"
 alterado = original + "_alterado"
 diferenca = original + "_diff"
 
@@ -39,7 +39,7 @@ plt.ylabel('y (m)')
 plt.title("Laser Intensity")
 plt.show()
 
-# Import the object from an image file
+# Import the object from an image file (ATENÇÃO AO PATH)
 mypath = f'/home/vasco04/Desktop/{original}.jpg'
 img = Image.open(mypath)
 plt.imshow(img)
@@ -128,6 +128,7 @@ plt.xlabel('Frequency x')
 plt.ylabel('Frequency y')
 plt.title("Interpolated MTF")
 plt.colorbar()
+#(ATENÇÃO AO PATH)
 plt.savefig(f'/home/vasco04/Desktop/MTF.jpg', dpi=300)
 plt.show()
 
@@ -165,58 +166,6 @@ im_2.set_clim(0, 700)
 im_3.set_clim(0, 700)
 
 plt.subplots_adjust(left=0.085, bottom=0.068, right=0.93, top=0.88, wspace=0.486, hspace=0.245)
+#(ATENÇÃO AO PATH)
 plt.savefig(f'/home/vasco04/Desktop/{alterado}.jpg', dpi=300)
 plt.show()
-
-
-'''
-
-# Deapply MTF (deconvolution)
-# Prevent division by zero
-mtf[mtf == 0] = 1e-10
-fourier_plane_deapplied = fourier_plane / mtf
-
-# Inverse Fourier transform to get the deapplied output field
-output_field_deapplied = fftpack.ifftshift(fftpack.ifft2(fftpack.fftshift(fourier_plane_deapplied)))
-
-# Show results
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
-fig.suptitle('Fourier optics - Deapplied')
-
-axs[0, 0].set_title('Input Field')
-im_1 = axs[0, 0].imshow(input_field, extent=[-system_size / 2, system_size / 2, -system_size / 2, system_size / 2])
-axs[0, 0].set_xlabel('x (m)')
-axs[0, 0].set_ylabel('y (m)')
-
-axs[0, 1].set_title('Fourier Transform')
-axs[0, 1].set_xlabel('x (m)')
-axs[0, 1].set_ylabel('y (m)')
-im_2 = axs[0, 1].imshow(np.abs(fourier_plane_deapplied), extent=[x_freq.min(), x_freq.max(), y_freq.min(), y_freq.max()])
-
-axs[1, 0].set_title('Fourier Transform without MTF')
-im_3 = axs[1, 0].imshow(np.abs(fourier_plane_deapplied) * mtf, extent=[x_freq.min(), x_freq.max(), y_freq.min(), y_freq.max()])
-axs[1, 0].set_xlabel('x (m)')
-axs[1, 0].set_ylabel('y (m)')
-
-axs[1, 1].set_title('Output Field Deapplied')
-im_4 = axs[1, 1].imshow(np.abs(output_field_deapplied), extent=[-system_size / 2, system_size / 2, -system_size / 2, system_size / 2])
-axs[1, 1].set_xlabel('x (m)')
-axs[1, 1].set_ylabel('y (m)')
-
-im_2.set_clim(0, 700)
-im_3.set_clim(0, 700)
-
-plt.subplots_adjust(left=0.085, bottom=0.068, right=0.93, top=0.88, wspace=0.486, hspace=0.245)
-plt.savefig(f'/home/vasco04/Desktop/{alterado}_inversa.jpg', dpi=300)
-plt.show()
-
-# Subtract deapplied output image from input image and plt.imshow it
-diff_deapplied = np.abs(output_field_deapplied - input_field)
-plt.imshow(diff_deapplied, extent=[-system_size / 2, system_size / 2, -system_size / 2, system_size / 2])
-plt.xlabel('x (m)')
-plt.ylabel('y (m)')
-plt.title("Difference between input and deapplied output")
-plt.savefig(f'/home/vasco04/Desktop/{diferenca}_inversa.jpg', dpi=300)
-plt.show()
-
-'''
